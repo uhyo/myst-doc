@@ -1,0 +1,17 @@
+<!doctype html><html><head><meta charset="UTF-8"><title>my-static docs</title><link rel="stylesheet" href="/myst-doc/css/css.css"></head><body><header class="page-header"><h1>my-static docs</h1></header><div class="page-main-container"><nav class="page-nav"><ul><li><a href="/myst-doc/">Home</a></li><li><a href="/myst-doc/myst.json.html">myst.json</a></li><li><a href="/myst-doc/renderers.html">Renderers</a></li><li><a href="/myst-doc/data.html">Data</a></li><li><a href="/myst-doc/extensions.html">Extensions</a></li><li><a href="/myst-doc/cli.html">CLI</a></li><li><a href="/myst-doc/changelog.html">Changelog</a></li></ul></nav><main class="page-main"><article><h1>Extensions</h1><p>You can add extensions to customize the behavior of myst.</p><p>To add extensions, specify in the <code>extension</code> to <code>myst.json</code>:</p><div class="file-code"><div class="file-name">myst.json</div><pre><code>{
+  "outDir": "./out",
+  "rootDir": "./src",
+  "data": "./data",
+  "dependency": ["./templates"],
+  <em>"extension": "./extensions/foo.js"</em>
+}</code></pre></div><p>Extensions should export a function that takes <code>RenderContext</code> as a single argument.</p><p>Using <code>RenderContext</code>, you can add hooks.</p><h2>RenderContext#addPostRenderHook</h2><p>Using <b>addPostRenderHook</b>, you can modify the result of renderers.</p><p>For example, following extension minifies every HTML file using <a href="https://www.npmjs.com/package/html-minifier">html-minifier</a>.</p><div class="file-code"><div class="file-name">extensions/foo.js</div><pre><code>const minify = require('html-minifier').minify;
+module.exports = (context)=&gt;{
+    context.addPostRenderHook((context, content, target)=&gt;{
+        if (!/\.html$/.test(target)){
+            return content;
+        }
+        return minify(content, {
+            collapseWhitespace: true,
+        });
+    });
+};</code></pre></div><p><b>addPostRenderHook</b> takes a callback function as an argument. <code>context</code> is current <code>RenderContext</code>. <code>content</code> is result of renderers in string. <code>target</code> is an absolute path of output file.</p><p>Note that if you do not want to modify <code>content</code>, you must return <code>context</code> as-is, instead of returning <code>null</code> or others. Returning <code>null</code> cancels rendering current target.</p></article></main></div></body></html>
