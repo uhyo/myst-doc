@@ -1,0 +1,46 @@
+{>"$PROJ/templates/layout.dust"/}
+{<content}
+  <article>
+    <h1>myst.json</h1>
+    <p>myst.json is the setting file for your project. It is like package.json for node.js project.</p>
+    <p>Minimal myst.json may be in a following form:</p>
+    <pre><code>{
+  "outDir": "./out",      // output directory.
+  "rootDir": "./src",     // directory that contains template files.
+  "data": "./data",       // directory that contains data files.
+  "dependency": ["./templates"]      // dependencies other than src and data.
+}</code></pre>
+    <p>All paths (<code>outDir</code>, <code>rootDir</code>, etc) are relative to the <code>myst.json</code>. Also absolute paths are accepted.</p>
+    <h2>outDir</h2>
+    <p>The directory where rendered files are located. This field is mandatory.</p>
+
+    <h2>rootDir</h2>
+    <p>The directory where all the files to be rendered are placed. Defaults to the directory where <code>myst.json</code> is located.</p>
+    <p>Each file in <code>rootDir</code> is handled by <a href="{site.base}renderers.html">renderers</a>.</p>
+
+    <h2>outExt</h2>
+    <p>The extension of rendered HTML files. Defaults to <code>.html</code>.</p>
+
+    <h2>data</h2>
+    <p>The directory that contains data files. See <a href="{site.base}data.html">Data</a>.</p>
+
+    <h2>cache</h2>
+    <p>Name of the cache file. When this field is set, the data loaded from data directory is cached into a single file. Caches may reduce file system access. See <a href="{site.base}data.html#caches">Caches</a>.</p>
+
+    <h2>dependency</h2>
+    <p>The other files or directories that may affect render results. For example, template files referred from render targets.</p>
+    <p>This field accepts both string and array of string. It has meaning only in <a href="{site.base}cli.html#watching">watch mode</a>.</p>
+
+    <h2>target</h2>
+    <p>Files in <code>rootDir</code> to be rendered. Node that it is relative to <code>myst.json</code>, not <code>rootDir</code>.</p>
+    <p>This field accepts a string and an array of strings. Globs can be used for this field. Defaults to <code>$rootDir/**/*</code>, so by default myst attempts to render all the files in <code>rootDir</code>.</p>
+
+    <h2>extension</h2>
+    <p>Extension scripts. Both string and array of strings are accepted. See <a href="{site.base}extensions.html">Extensions</a> for details.</p>
+
+    <h2>server</h2>
+    <p>Settings for the <a href="{site.base}cli.html#server">server mode</a>.</p>
+
+  </article>
+{/content}
+

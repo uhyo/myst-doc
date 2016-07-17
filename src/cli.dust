@@ -1,0 +1,46 @@
+{>"$PROJ/templates/layout.dust"/}
+{<content}
+  <article>
+    <h1>CLI</h1>
+
+    <p>Run CLI <code>myst</code> to build your project.</p>
+    <p><code>myst</code> has some options. (See <code>myst --help</code> for details.)</p>
+
+    <h2>Selecting projects</h2>
+    <p>Using the <code>-p</code> or <code>--project</code> option, you can specify the alternative name of <code>myst.json</code>.</p>
+    <pre class="sh"><code>$ myst -p myst2.json</code></pre>
+
+    <h2>Specifying output directory</h2>
+    <p>Using the <code>-o</code> or <code>--outDir</code> option, you can temporarily overwrite <code>outDir</code> of <code>myst.json</code>.</p>
+    <pre class="sh"><code>$ myst -o ./out2</code></pre>
+
+    <h2>Forcing</h2>
+    <p>The <code>-f</code> or <code>--force</code> to disable any caching and force all render targets to be rerendered.</p>
+
+    <h2 id="watching">Watching</h2>
+    <p>When the <code>-w</code> or <code>--watch</code> option is enabled, <code>myst</code> process stays alive and watches the file system.</p>
+    <p>Once a file in <code>rootDir</code> is updated, <code>myst</code> rerenders the file.</p>
+    <p>When a file in <code>data</code> or <code>dependency</code> is updated, all render targets are rerendered.</p>
+
+    <p>Even if the <code>--watch</code> option is enabled, <code>myst</code> first renders all the target files. To supress this behavior, enable the <code>--nobuild</code> option.</p>
+
+    <h2 id="server">Server</h2>
+    <p>When the <code>-s</code> or <code>--server</code> option is enabled, <code>myst</code> starts a web server using <a href="https://www.npmjs.com/package/express">express</a>. You can observe the render results through the server. <a href="{site.base}/myst.json.html">myst.json</a> has a <code>server</code> field to configure the server:</p>
+    <div class="file-code">
+      <div class="file-name">myst.json</div>
+      <pre><code>{
+  "server": {
+    "port": 8080,       // port to listen.
+    "contentBase": "/content/"
+  }
+}</code></pre>
+    </div>
+    <p><code>port</code> can be overwritten using <code>--port</code> option.</p>
+    <p>By default, <code>outDir</code> is mounted on <code>/</code> by the server. You can change the mount point using <code>contentBase</code>.</p>
+  </article>
+{/content}
+
+
+
+
+

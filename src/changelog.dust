@@ -1,0 +1,15 @@
+{>"$PROJ/templates/layout.dust"/}
+{<content}
+  <article>
+    <h1>Changelog</h1>
+
+		<h2>v1.0.0, 2016-07-17</h2>
+		<p>The first published version for me.</p>
+  </article>
+{/content}
+
+
+
+
+
+

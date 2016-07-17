@@ -1,0 +1,10 @@
+{
+    "outDir": "./out",
+    "rootDir": "./src",
+    "data": "./data",
+    "dependency": "./templates",
+    "extension": ["./extensions/minify.js"],
+    "server": {
+        "contentRoot": "/myst-doc/"
+    }
+}

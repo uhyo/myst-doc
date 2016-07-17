@@ -1,0 +1,81 @@
+{>"$PROJ/templates/layout.dust"/}
+{<content}
+  <article>
+    <h1>Data</h1>
+    <p>Files in <code>data</code> directory specified by <a href="{site.base}myst.json.html">myst.json</a> are loaded and stored into a single object. The loader can load <code>.json</code>, <code>.yaml</code> and <code>.js</code> files.</p>
+    <p>Each <code>.js</code> file is executed by <code>require</code> and its return value (i.e. <code>module.exports</code> value) is taken. If the return value is <code>Promise</code>, its resolved value is taken.</p>
+
+    <h2>Example</h2>
+    <p>If you have following files in data directory:</p>
+    <div class="file-code">
+      <div class="file-name">foo.json</div>
+      <pre><code>{
+  "type": "json",
+  "吾輩は": "猫である"
+}</code></pre>
+    </div>
+    <div class="file-code">
+      <div class="file-name">bar.yaml</div>
+      <pre><code>type: yaml
+array:
+  - 長男
+  - 次男
+  - 三男</code></pre>
+    </div>
+    <div class="file-code">
+      <div class="file-name">hoge.js</div>
+      <pre><code>module.exports = {
+  type: 'js',
+};</code></pre>
+    </div>
+
+    <p>Then the result is:</p>
+    <pre><code>{
+  "foo": {
+    "type": "json",
+    "吾輩は": "猫である"
+  },
+  "bar": {
+    "type": "yaml",
+    "array": ["長男","次男","三男"]
+  },
+  "hoge": {
+    "type": "js"
+  }
+}</code></pre>
+    <p>and is exposed to templates. Use like this:</p>
+    <div class="file-code">
+      <div class="file-name">sample.dust</div>
+      <pre><code>&lt;p&gt;{~lb}foo.type{~rb}&lt;/p&gt;</code></pre>
+    </div>
+
+  <h2 id="caches">Caches</h2>
+  <p>If <code>myst.json</code> has a <code>cache</code> field, whole data will be written into a single JSON file. The cache is used next time to reduce file system access. If you have data that cannot be serialized as a JSON value, you should not use caches.</p>
+  <p>In the above example, if the <code>cache</code> has the value <code>.myst.cache.json</code>, it will be like:</p>
+    <div class="file-code">
+      <div class="file-name">.myst.cache.json</div>
+      <pre><code>{
+  "foo": {
+    "type": "json",
+    "吾輩は": "猫である",
+    "$mtime": 1468751336241
+  },
+  "bar": {
+    "type": "yaml",
+    "array": ["長男","次男","三男"],
+    "$mtime": 1468751336241
+  },
+  "hoge": {
+    "type": "js",
+    "$mtime": 1468751336241
+  },
+  "$mtime": 1468751336241
+}</code></pre>
+    </div>
+    <p>where <code>$mtime</code> is the last modified time of each file / directory.</p>
+
+  </article>
+{/content}
+
+
+

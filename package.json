@@ -1,0 +1,16 @@
+{
+  "name": "myst-doc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "github-publish": "git subtree push --prefix=out origin gh-pages",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "uhyo",
+  "license": "MIT",
+  "dependencies": {
+    "html-minifier": "^3.0.1",
+    "node-sass": "^3.8.0"
+  }
+}
