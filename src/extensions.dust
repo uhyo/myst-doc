@@ -19,6 +19,38 @@
     <p>Extensions should export a function that takes <code>RenderContext</code> as a single argument.</p>
     <p>Using <code>RenderContext</code>, you can add hooks.</p>
 
+    <h2>RenderContext#addPostLoadDataHook</h2>
+    <p>Using <b>addPostLoadDataHook</b>, you can modify <a href="./data.html">data</a> loaded from data directory after it is loaded.</p>
+    <p>It is useful when you want to do some calculations from data. You can access the data by <code>context.data</code>.</p>
+    <h3>Example</h3>
+    <div class="file-code">
+      <div class="file-name">data/numbers.js</div>
+      <pre><code>// This will be available as context.data.numbers
+module.exports = [1, 2, 3, 4, 5];</code></pre>
+    </div>
+    <div class="file-code">
+      <div class="file-name">extensions/foo.js</div>
+      <pre><code>module.exports = (context)=&gt;{
+    context.addPostLoadDataHook((context)=&gt;{
+        context.data.sum = context.data.numbers.reduce((a,b)=&gt;a+b);
+    });
+};</code></pre>
+    </div>
+
+    <h2>RenderContext#addPreRenderHook</h2>
+    <p>By <b>preRenderHook</b>, you can modify the data passed to template engines before each file is rendered.</p>
+    <p>The difference from addPostLoadDataHook is that this hook is processed for each files and that modification does not affect rendering of other files.</p>
+    <div class="file-code">
+      <div class="file-name">extensions/foo.js</div>
+      <pre><code>module.exports = (context)=&gt;{
+    context.addPreRenderHook((context, filename, data)=&gt;{
+        // filename is an absolute path of the file being rendered
+        // It is safe to directly modify the data:
+        data.filename = path.basename(filename);
+    });
+};</code></pre>
+    </div>
+
     <h2>RenderContext#addPostRenderHook</h2>
     <p>Using <b>addPostRenderHook</b>, you can modify the result of renderers.</p>
     <p>For example, following extension minifies every HTML file using <a href="https://www.npmjs.com/package/html-minifier">html-minifier</a>.</p>
@@ -39,6 +71,52 @@ module.exports = (context)=&gt;{
     <p><b>addPostRenderHook</b> takes a callback function as an argument. <code>context</code> is current <code>RenderContext</code>. <code>content</code> is result of renderers in string. <code>target</code> is an absolute path of output file.</p>
     <p>Note that if you do not want to modify <code>content</code>, you must return <code>context</code> as-is, instead of returning <code>null</code> or others. Returning <code>null</code> cancels rendering current target.</p>
 
+    <h2>RenderContext#addUnknownExtensionHook</h2>
+    <p>You can handle any filename extension you want by using <b>addUnknownExtensionHook</b>.</p>
+    <p>You have to somehow make <code>RenderFunction</code> to define how to handle files. <code>my-static</code> exports <code>renderUtil</code>. To just copy files to output folder:</p>
+    <div class="file-code">
+      <div class="file-name">extensions/foo.js</div>
+      <pre><code>const myst = require('my-static');
+module.exports = (context)=&gt;{
+    context.addUnknownExtensionHook((context, ext)=&gt;{
+        if (ext === '.csv'){
+            return myst.renderUtil.makeStaticRenderer(context);
+        }
+        return null;
+    });
+};</code></pre>
+    </div>
+
+    <h2>RenderContext#addLoadFileHook</h2>
+    <p>Using <b>addLoadFileHook</b>, you can replace the procedure of loading rendered files.</p>
+    <div class="file-code">
+      <div class="file-name">extensions/foo.js</div>
+      <pre><code>module.exports = (context)=&gt;{
+    context.addLoadFileHook((context, filename, binary)=&gt;{
+        // `binary` is a boolean flag. If true, Buffer is expected. Otherwise, string is expected.
+        // Return raw data or Promise.
+        // By returning null, you can fallback to next hook (or default procedure).
+        if (path.extname(filename) === '.txt'){
+            return 'I am txt file ^o^';
+        }
+        return null;
+    });
+};</code></pre>
+    </div>
+
+    <h2>RenderContext#addPostLoadFileHook</h2>
+    <p>Using <b>addPostLoadFileHook</b>, you can modify the content of the rendered file before it is passed to template engines.</p>
+    <div class="file-code">
+      <div class="file-name">extensions/foo.js</div>
+      <pre><code>module.exports = (context)=&gt;{
+    context.addPostLoadFileHook((context, filename, data)=&gt;{
+        // Data loaded by my-static is passed as the third argument.
+        // Return raw data or Promise.
+        // Return null to leave it untouched.
+        return null;
+    });
+};</code></pre>
+    </div>
   </article>
 {/content}
 

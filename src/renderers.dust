@@ -5,7 +5,8 @@
     <p>Renderers handle each files in <code>rootDir</code> (and its subdirectories) and emit output into <code>outDir</code>.</p>
 
     <p>my-static is equipped with built-in renderers for jade (<code>.jade</code>), ejs (<code>.ejs</code>) and dustjs (<code>.dust</code>).</p>
-    <p>It also has a renderer for Sass (<code>.sass</code>, <code>.scss</code>) that compiles Sass code into CSS, and renderers for some static files (<code>.css</code>, <code>.js</code>, <code>.html</code>) that just copy files into output directory.</p>
+    <p>It also has a renderer for Sass (<code>.sass</code>, <code>.scss</code>) that compiles Sass code into CSS. Note that you need to manually install <code>node-sass</code> to the project directory in order to use this feature.</p>
+    <p>Renderers for some static files (<code>.css</code>, <code>.js</code>, <code>.html</code>) are also available. These renderers just copy files into output directory.</p>
     <p>my-static determines which renderer to use by the target's extension.</p>
 
     <p>Some built-in renderers have special features.</p>
@@ -17,6 +18,17 @@
     <p>By the dustjs renderer, dustjs' config is set as following.</p>
     <pre><code>dust.config.whitespace = true;
 dust.config.cache = false;</code></pre>
+
+    <p>If you want to add your helpers or do other customize, use <a href="{site.base}extensions.html">extensions</a> as follows:</p>
+    <div class="file-code">
+      <div class="file-name">extensions/dust.js</div>
+      <pre><code>module.exports = (context)=&gt;{
+  const dr = context.getRenderer('dummy.dust');
+  const dust = dr.dust;
+
+  dust.helpers.myHelper = ...;
+};</code></pre>
+    </div>
 
   </article>
 {/content}
