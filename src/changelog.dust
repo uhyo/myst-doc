@@ -3,6 +3,8 @@
   <article>
     <h1>Changelog</h1>
 
+    <h2>v2.0.0, 2019-05-29</h2>
+    <p>Require node >= 8 for me.</p>
 		<h2>v1.0.0, 2016-07-17</h2>
 		<p>The first published version for me.</p>
   </article>
