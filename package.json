@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "html-minifier": "^3.0.1",
-    "node-sass": "^3.8.0"
+    "node-sass": "^7.0.0"
   },
   "devDependencies": {
     "my-static": "^2.0.0"
